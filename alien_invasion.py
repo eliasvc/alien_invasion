@@ -10,6 +10,8 @@ class AlienInvasion:
     def __init__(self):
         """Initialize the game, and create game resources"""
         pygame.init()
+        
+        self.joysticks = {}
 
         # Add clock for framerate
         self.clock = pygame.time.Clock()
@@ -20,6 +22,8 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
+
+
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -52,8 +56,21 @@ class AlienInvasion:
                     self.ship.moving_right = False
                 elif event.key == pygame.K_LEFT:
                     self.ship.moving_left = False
+            # Handle hotplugging
+            elif event.type == pygame.JOYDEVICEADDED:
+                # From the pygame offical docs:
+                # This event will be generated when the program starts for every
+                # joystick, filling up the list without needing to create them manually.
+                joycon = pygame.joystick.Joystick(event.device_index)
+                self.joysticks[joycon.get_instance_id()] = joycon
+                print(f"Joystick {joycon.get_instance_id()} connencted")
 
-
+            elif event.type == pygame.JOYDEVICEREMOVED:
+                del self.joysticks[event.instance_id]
+                print(f"Joystick {event.instance_id} disconnected")
+            
+            else:
+                print(event)
 
 if __name__ == '__main__':
     # Make a game instance, and run the game
