@@ -67,11 +67,7 @@ class AlienInvasion:
             elif event.type == pygame.JOYDEVICEREMOVED:
                 self.joycon = None
                 print(f"Joystick {event.instance_id} disconnected")
-            else:
-                print(event, event.type)
-
-            # Poll joystick dpad state
-            if self.joycon:
+            elif event.type == pygame.JOYHATMOTION and self.joycon:
                 # hat contains a touple with values depending on which dpad button was pressed:
                 # (1, 0)  -> dpad right
                 # (-1, 0) -> dpad left
@@ -87,6 +83,8 @@ class AlienInvasion:
                 if hat_x == 0:
                     self.ship.moving_right = False
                     self.ship.moving_left = False
+            else:
+                print(event)
 
 
 if __name__ == '__main__':
