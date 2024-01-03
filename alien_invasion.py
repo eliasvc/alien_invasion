@@ -63,6 +63,9 @@ class AlienInvasion:
                 self._check_joystick_disconnection_events(event)
             elif event.type == pygame.JOYHATMOTION and self.joycon:
                 self._check_hat_events(event)
+            elif event.type == pygame.JOYBUTTONDOWN and self.joycon:
+                if event.button == 0:
+                    self._fire_bullet() 
             else:
                 print(event)
     
